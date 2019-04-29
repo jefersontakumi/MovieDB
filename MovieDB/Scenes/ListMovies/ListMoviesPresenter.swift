@@ -11,6 +11,8 @@ import UIKit
 protocol ListMoviesPresentationLogic
 {
     func presentFetchedMovies(response: ListMovies.FetchMovies.Response)
+    func presentFetchedMoviesPoster(response: ListMovies.FetchMovies.ResponsePoster)
+    func showError(message: String)
 }
 
 class ListMoviesPresenter: ListMoviesPresentationLogic
@@ -20,11 +22,25 @@ class ListMoviesPresenter: ListMoviesPresentationLogic
     func presentFetchedMovies(response: ListMovies.FetchMovies.Response)
     {
         var displayedMovies: [ListMovies.FetchMovies.ViewModel.DisplayedMovie] = []
-        
         displayedMovies = response.movies.map { (movie) in
             return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: movie.title, url_image_banner: movie.posterPath(size: .w500_and_h282_face))
         }
-        let viewModel = ListMovies.FetchMovies.ViewModel(displayedMovies: displayedMovies)
-        viewController?.displayFetchedMovies(viewModel: viewModel)
+        viewController?.displayFetchedMovies(viewModel: displayedMovies)
+    }
+    
+    func presentFetchedMoviesPoster(response: ListMovies.FetchMovies.ResponsePoster)
+    {
+        var displayedMovies: [String:[ListMovies.FetchMovies.ViewModel.DisplayedMovie]] = [:]
+        
+        for (key,value) in response.movies {
+            displayedMovies[key] = value.map { (movie) in
+                return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: movie.title, url_image_banner: movie.posterPath(size: .w185))
+            }
+        }
+        viewController?.displayFetchedMoviesPoster(viewModel: displayedMovies)
+    }
+    
+    func showError(message: String) {
+        viewController?.displayError(message: message)
     }
 }

@@ -22,6 +22,11 @@ enum ListMovies
             var movies: [Movie]
         }
         
+        struct ResponsePoster
+        {
+            var movies:  [String:[Movie]]
+        }
+        
         struct ViewModel
         {
             struct DisplayedMovie
@@ -31,6 +36,7 @@ enum ListMovies
                 var url_image_banner: String?
             }
             var displayedMovies: [DisplayedMovie]
+            var displayedMoviesPoster:[String:[DisplayedMovie]]
         }
     }
 }
