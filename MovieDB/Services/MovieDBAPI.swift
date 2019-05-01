@@ -25,11 +25,15 @@ class MovieDBAPI: MovieDBStoreProtocol {
         }
     }
     
-    func fetchMovies( done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void){
+    func fetchMovies(genreID: Int?, done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void){
         let requestURLString = "\(Config.apiUrl)/discover/movie"
-        let parameters: Dictionary<String, String> = [
+        var parameters: Dictionary<String, String> = [
             "api_key": Config.apiKey
         ]
+        
+        if let genre = genreID {
+            parameters["with_genres"] = "\(genre)"
+        }
         
         var movies :[Movie] = []
         
@@ -94,6 +98,33 @@ class MovieDBAPI: MovieDBStoreProtocol {
                     let jsonDictionary = jsonObject as? [String: Any] {
                     movie = try! JSONDecoder().decode(DetailMovie.self, from: try! JSONSerialization.data(withJSONObject: jsonDictionary, options: JSONSerialization.WritingOptions.prettyPrinted))
                     done(movie!)
+                }
+                else
+                {
+                    fail("Ocorreu um problema na conversão")
+                }
+            case .failed(let error):
+                fail(error.localizedDescription)
+            }
+        }
+    }
+    
+    func fetchGenres(done: @escaping ([Genre]) -> Void, fail: @escaping (String) -> Void){
+        let requestURLString = "\(Config.apiUrl)/genre/movie/list"
+        let parameters: Dictionary<String, String> = [
+            "api_key": Config.apiKey
+        ]
+        
+        var genres :[Genre] = []
+        
+        self.requestGet(requestURLString: requestURLString, parameters: parameters){ (result) in
+            switch result {
+            case .success(let data):
+                if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+                    let jsonDictionary = jsonObject as? [String: Any],
+                    let results = jsonDictionary["genres"] {
+                    genres = try! JSONDecoder().decode([Genre].self, from: try! JSONSerialization.data(withJSONObject: results, options: JSONSerialization.WritingOptions.prettyPrinted))
+                    done(genres)
                 }
                 else
                 {

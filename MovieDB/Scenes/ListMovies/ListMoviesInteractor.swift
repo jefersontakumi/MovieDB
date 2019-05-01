@@ -10,12 +10,14 @@ import UIKit
 
 protocol ListMoviesBusinessLogic
 {
+    func fetchMoviesByGenre(id: Int?)
     func fetchMovies(request: ListMovies.FetchMovies.Request)
     func fetchMoviesPoster()
 }
 
 protocol ListMoviesDataStore
 {
+    var currentGenreID: Int?  {get set}
     var moviesUpcoming: [Movie]? { get }
     var moviesPoster: [String:[Movie]]? { get }
 }
@@ -25,11 +27,32 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
     var presenter: ListMoviesPresentationLogic?
     
     var moviesWorker = MovieWorker(movieDBStore: MovieDBAPI())
+    var currentGenreID: Int?
     var moviesUpcoming: [Movie]?
     var moviesPoster: [String:[Movie]]?
     
+    func fetchMoviesByGenre(id: Int?)
+    {
+        moviesWorker.fecthMovies(genreID: id) { (dataMovies, error) in
+            if let errorMessage = error, !errorMessage.isEmpty {
+                self.presenter?.showError(message: errorMessage)
+            }
+            else if let movies = dataMovies
+            {
+                self.moviesUpcoming = movies
+                let response = ListMovies.FetchMovies.Response(movies: movies)
+                self.presenter?.presentFetchedMovies(response: response)
+            }
+        }
+    }
+    
     func fetchMovies(request: ListMovies.FetchMovies.Request)
     {
+        if let genre = currentGenreID, genre > 0 {
+            self.fetchMoviesByGenre(id: genre)
+        }
+        else
+        {
         moviesWorker.fecthMovies(listType: request.listType) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
@@ -40,6 +63,7 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 let response = ListMovies.FetchMovies.Response(movies: movies)
                 self.presenter?.presentFetchedMovies(response: response)
             }
+        }
         }
     }
     

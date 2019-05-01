@@ -7,7 +7,8 @@
 //
 
 protocol MovieDBStoreProtocol {
-    func fetchMovies(done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void)
+    func fetchMovies(genreID: Int?, done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void)
     func fetchMovies(listType: MovieList, done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void)
     func getMovie(id: Int, done: @escaping (DetailMovie) -> Void, fail: @escaping (String) -> Void)
+    func fetchGenres(done: @escaping ([Genre]) -> Void, fail: @escaping (String) -> Void)
 }

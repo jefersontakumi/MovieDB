@@ -20,7 +20,7 @@ extension UIImageView {
             }
             else
             {
-                self.image = nil
+                self.image = #imageLiteral(resourceName: "placeholderImage")
             }
         }).resume()
     }

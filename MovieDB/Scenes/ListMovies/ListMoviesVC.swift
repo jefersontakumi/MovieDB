@@ -101,6 +101,7 @@ extension ListMoviesVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "upcomingCell", for: indexPath) as! MovieUpcomingCell
         let currentMovie = moviesUpcoming![indexPath.row]
+        cell.titleMovie.text = currentMovie.title
         cell.setImage(urlImage: currentMovie.url_image_banner)
         return cell
     }

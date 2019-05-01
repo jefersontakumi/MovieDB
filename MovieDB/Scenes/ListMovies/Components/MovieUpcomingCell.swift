@@ -12,7 +12,7 @@ import AlamofireImage
 
 class MovieUpcomingCell: UICollectionViewCell {
     @IBOutlet var image: UIImageView!
-    
+    @IBOutlet var titleMovie: UILabel!
     func setImage(urlImage: String? ) {
         if let urlImage = urlImage{
             Alamofire.request(urlImage).responseImage { response in
