@@ -23,7 +23,7 @@ class ListMoviesPresenter: ListMoviesPresentationLogic
     {
         var displayedMovies: [ListMovies.FetchMovies.ViewModel.DisplayedMovie] = []
         displayedMovies = response.movies.map { (movie) in
-            return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: movie.title, url_image_banner: movie.posterPath(size: .w500_and_h282_face))
+            return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: movie.title, url_image_banner: movie.backdropPath(size: .w500_and_h282_face))
         }
         viewController?.displayFetchedMovies(viewModel: displayedMovies)
     }

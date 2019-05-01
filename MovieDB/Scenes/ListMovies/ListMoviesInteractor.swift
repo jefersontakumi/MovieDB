@@ -45,6 +45,30 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
     
     func fetchMoviesPoster()
     {
+        let loadMovies = DispatchGroup()
+        
+        loadMovies.enter()
+        moviesWorker.fecthMovies(listType: .now_playing) { (dataMovies, error) in
+            if let errorMessage = error, !errorMessage.isEmpty {
+                self.presenter?.showError(message: errorMessage)
+            }
+            else if let movies = dataMovies
+            {
+                if self.moviesPoster == nil {
+                    self.moviesPoster = [String:[Movie]]()
+                }
+                if var aux = self.moviesPoster!["Now Playing"] {
+                    aux.append(contentsOf: movies)
+                }
+                else
+                {
+                    self.moviesPoster!["Now Playing"]  = movies
+                }
+                loadMovies.leave()
+            }
+        }
+        
+        loadMovies.enter()
         moviesWorker.fecthMovies(listType: .top_rated) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
@@ -54,18 +78,18 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 if self.moviesPoster == nil {
                     self.moviesPoster = [String:[Movie]]()
                 }
-                if var aux = self.moviesPoster!["Top_Rated"] {
+                if var aux = self.moviesPoster!["Top Rated"] {
                     aux.append(contentsOf: movies)
                 }
                 else
                 {
-                    self.moviesPoster!["Top_Rated"]  = movies
+                    self.moviesPoster!["Top Rated"]  = movies
                 }
-                let response = ListMovies.FetchMovies.ResponsePoster(movies: self.moviesPoster!)
-                self.presenter?.presentFetchedMoviesPoster(response: response)
+               loadMovies.leave()
             }
         }
         
+        loadMovies.enter()
         moviesWorker.fecthMovies(listType: .popular) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
@@ -82,9 +106,13 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 {
                     self.moviesPoster!["Popular"]  = movies
                 }
-                let response = ListMovies.FetchMovies.ResponsePoster(movies: self.moviesPoster!)
-                self.presenter?.presentFetchedMoviesPoster(response: response)
+                loadMovies.leave()
             }
+        }
+        
+        loadMovies.notify(queue: .main) {
+            let response = ListMovies.FetchMovies.ResponsePoster(movies: self.moviesPoster!)
+            self.presenter?.presentFetchedMoviesPoster(response: response)
         }
     }
 }

@@ -7,14 +7,24 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 protocol DetailMovieDisplayLogic: class
 {
-    
+    func displayError(message: String)
+    func displayFetchedMovie(viewModel: DetailMovieModels.GetMovie.ViewModel)
 }
 
 class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
 
+    @IBOutlet var scroll: UIScrollView!
+    @IBOutlet var backdropImg: UIImageView!
+    @IBOutlet var posterImg: UIImageView!
+    @IBOutlet var titleMovie: UILabel!
+    @IBOutlet var releaseYear: UILabel!
+    @IBOutlet var overview: UILabel!
+    
     var interactor: DetailMovieBusinessLogic?
     var router: (NSObjectProtocol & DetailMovieRoutingLogic & DetailMovieDataPassing)?
     
@@ -31,17 +41,44 @@ class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()    }
+        super.viewDidLoad()
+        interactor?.getMovie(request: DetailMovieModels.GetMovie.Request(id: (router?.dataStore?.movie!.id)!))
+    }
     
     private func setup()
     {
         let viewController = self
         let interactor = DetailMovieInteractor()
+        let presenter = DetailMoviePresenter()
         let router = DetailMovieRouter()
         viewController.interactor = interactor
         viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
     }
-
+    
+    func displayError(message: String) {
+        let alert = UIAlertController.init(title: "Erro", message: message, preferredStyle: .alert)
+        let btnOk = UIAlertAction.init(title: "OK", style: .default, handler: nil)
+        alert.addAction(btnOk)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func displayFetchedMovie(viewModel: DetailMovieModels.GetMovie.ViewModel) {
+        DispatchQueue.main.async {
+            let movie = viewModel.displayedDetailMovie
+            self.titleMovie.text = movie.title
+            self.titleMovie.sizeToFit()
+            self.posterImg.imageFromRemote(urlString: movie.url_image_poster ?? "")
+            self.backdropImg.imageFromRemote(urlString: movie.url_image_backdrop ?? "")
+            
+            self.overview.text = movie.overview
+            self.overview.sizeToFit()
+            self.releaseYear.text = "\(movie.release_year)"
+        }
+    }
 }
+
+

@@ -45,6 +45,8 @@ class ListMoviesVC: UIViewController, ListMoviesDisplayLogic {
     // MARK: Setup
     private func setup()
     {
+        self.title = "MovieDB"
+        
         let viewController = self
         let interactor = ListMoviesInteractor()
         let presenter = ListMoviesPresenter()
@@ -71,12 +73,16 @@ class ListMoviesVC: UIViewController, ListMoviesDisplayLogic {
     
     func displayFetchedMovies(viewModel: [ListMovies.FetchMovies.ViewModel.DisplayedMovie]) {
         moviesUpcoming = viewModel
-        upcomingCollection.reloadData()
+        DispatchQueue.main.async {
+            self.upcomingCollection.reloadData()
+        }
     }
     
     func displayFetchedMoviesPoster(viewModel: [String:[ListMovies.FetchMovies.ViewModel.DisplayedMovie]]) {
         moviesPoster = viewModel
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func displayError(message: String) {
@@ -132,7 +138,7 @@ extension ListMoviesVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let tableViewCell = cell as? PostersCell else { return }
         let key = Array(moviesPoster!.keys)[indexPath.section]
-        tableViewCell.collectionView.loadConfig(movies: moviesPoster![key]!, router: router as! ListMoviesRouter, storyboard: self.storyboard!)
+        tableViewCell.collectionView.loadConfig(movies: router?.dataStore?.moviesPoster?[key], displayMovies: moviesPoster![key]!, router: router as! ListMoviesRouter, storyboard: self.storyboard!)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

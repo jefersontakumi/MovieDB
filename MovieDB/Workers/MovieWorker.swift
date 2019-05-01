@@ -10,6 +10,7 @@ import Foundation
 
 protocol MovieWorkerProtocol {
     func fecthMovies(listType: MovieList,completionHandler: @escaping ([Movie]?, String?) -> Void)
+    func getMovie(id: Int, completionHandler: @escaping (DetailMovie?, String?) -> Void)
 }
 
 class MovieWorker: MovieWorkerProtocol {
@@ -21,6 +22,18 @@ class MovieWorker: MovieWorkerProtocol {
     
     func fecthMovies(listType: MovieList, completionHandler: @escaping ([Movie]?, String?) -> Void) {
         movieDBStore.fetchMovies(listType: listType, done: { (data) in
+            DispatchQueue.main.async {
+                completionHandler(data, nil)
+            }
+        }, fail: { (error) in
+            DispatchQueue.main.async {
+                completionHandler(nil, error)
+            }
+        })
+    }
+    
+    func getMovie(id: Int, completionHandler: @escaping (DetailMovie?, String?) -> Void) {
+        movieDBStore.getMovie(id: id, done: { (data) in
             DispatchQueue.main.async {
                 completionHandler(data, nil)
             }

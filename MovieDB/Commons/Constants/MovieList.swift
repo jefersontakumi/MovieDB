@@ -10,4 +10,5 @@ enum MovieList {
     case upcoming
     case top_rated
     case popular
+    case now_playing
 }

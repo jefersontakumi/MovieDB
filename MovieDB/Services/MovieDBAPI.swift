@@ -28,8 +28,7 @@ class MovieDBAPI: MovieDBStoreProtocol {
     func fetchMovies( done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void){
         let requestURLString = "\(Config.apiUrl)/discover/movie"
         let parameters: Dictionary<String, String> = [
-            "api_key": Config.apiKey,
-            "sort_by": "popularity.desc"
+            "api_key": Config.apiKey
         ]
         
         var movies :[Movie] = []
@@ -56,8 +55,7 @@ class MovieDBAPI: MovieDBStoreProtocol {
     func fetchMovies(listType: MovieList, done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void){
         let requestURLString = "\(Config.apiUrl)/movie/\(listType)"
         let parameters: Dictionary<String, String> = [
-            "api_key": Config.apiKey,
-            "sort_by": "popularity.desc"
+            "api_key": Config.apiKey
         ]
         
         var movies :[Movie] = []
@@ -70,6 +68,32 @@ class MovieDBAPI: MovieDBStoreProtocol {
                     let results = jsonDictionary["results"] {
                     movies = try! JSONDecoder().decode([Movie].self, from: try! JSONSerialization.data(withJSONObject: results, options: JSONSerialization.WritingOptions.prettyPrinted))
                     done(movies)
+                }
+                else
+                {
+                    fail("Ocorreu um problema na conversão")
+                }
+            case .failed(let error):
+                fail(error.localizedDescription)
+            }
+        }
+    }
+    
+    func getMovie(id: Int, done: @escaping (DetailMovie) -> Void, fail: @escaping (String) -> Void){
+        let requestURLString = "\(Config.apiUrl)/movie/\(id)"
+        let parameters: Dictionary<String, String> = [
+            "api_key": Config.apiKey
+        ]
+        
+        var movie: DetailMovie?
+        
+        self.requestGet(requestURLString: requestURLString, parameters: parameters){ (result) in
+            switch result {
+            case .success(let data):
+                if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+                    let jsonDictionary = jsonObject as? [String: Any] {
+                    movie = try! JSONDecoder().decode(DetailMovie.self, from: try! JSONSerialization.data(withJSONObject: jsonDictionary, options: JSONSerialization.WritingOptions.prettyPrinted))
+                    done(movie!)
                 }
                 else
                 {
