@@ -22,7 +22,7 @@ Obs: é necessário a url ser https
 
 Modelo do arquivo plist
 
-<myxml>
+```
 <plist version="1.0">
     <dict>
         <key>items</key>
@@ -67,5 +67,5 @@ Modelo do arquivo plist
         <string>MovieDB</string>
         </dict>
 </dict>
-</myxml>
+```
 
