@@ -15,12 +15,14 @@ protocol ListMoviesRoutingLogic
 
 protocol ListMoviesDataPassing
 {
+    var listMovies: ListMoviesVC? { get set }
     var dataStore: ListMoviesDataStore? { get }
 }
 
 class ListMoviesRouter: NSObject, ListMoviesRoutingLogic, ListMoviesDataPassing
 {
     weak var viewController: ListMoviesVC?
+    var listMovies: ListMoviesVC?
     var dataStore: ListMoviesDataStore?
     
     func routeToShowMovie(segue: UIStoryboard?, movie: Movie)

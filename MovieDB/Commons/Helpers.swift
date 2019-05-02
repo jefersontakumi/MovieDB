@@ -11,21 +11,5 @@ import Alamofire
 import AlamofireImage
 
 class Helpers{
-    static func setImage(urlImage: String? ) -> UIImage? {
-        var returnImage: UIImage?
-        if let urlImage = urlImage{
-            Alamofire.request(urlImage).responseImage { response in
-                if let image = response.result.value {
-                    returnImage = image
-                }
-                else
-                {
-                    returnImage = #imageLiteral(resourceName: "placeholderImage")
-                }
-            }
-        } else {
-            returnImage =  #imageLiteral(resourceName: "placeholderImage")
-        }
-        return returnImage
-    }
+    
 }
