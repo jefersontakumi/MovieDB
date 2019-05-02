@@ -31,6 +31,7 @@ enum DetailMovieModels
                 var url_image_poster: String?
                 var overview: String?
                 var release_year: Int
+                var video: Bool
             }
             var displayedDetailMovie: DisplayedDetailMovie
         }

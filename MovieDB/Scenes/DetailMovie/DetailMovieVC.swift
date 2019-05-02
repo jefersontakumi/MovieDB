@@ -24,6 +24,7 @@ class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
     @IBOutlet var titleMovie: UILabel!
     @IBOutlet var releaseYear: UILabel!
     @IBOutlet var overview: UILabel!
+    @IBOutlet var videoPlay: UIButton!
     
     var interactor: DetailMovieBusinessLogic?
     var router: (NSObjectProtocol & DetailMovieRoutingLogic & DetailMovieDataPassing)?
@@ -77,6 +78,8 @@ class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
             self.overview.text = movie.overview
             self.overview.sizeToFit()
             self.releaseYear.text = "\(movie.release_year)"
+            
+            self.videoPlay.isHidden = !movie.video
         }
     }
 }

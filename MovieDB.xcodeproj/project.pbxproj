@@ -47,6 +47,7 @@
 		83E55268227A7BBA00CE0141 /* ListGenreInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E55267227A7BBA00CE0141 /* ListGenreInteractor.swift */; };
 		83E5526B227A800800CE0141 /* ListGenresPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E5526A227A800800CE0141 /* ListGenresPresenter.swift */; };
 		83E5526D227A83CF00CE0141 /* ListGenresRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E5526C227A83CF00CE0141 /* ListGenresRouter.swift */; };
+		83E55270227BA45600CE0141 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83E5526F227BA45600CE0141 /* fontawesome-webfont.ttf */; };
 		BB3E729C67A688B58EBFB21F /* Pods_MovieDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03355BF87E872C78EDDCEFD /* Pods_MovieDB.framework */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		83E55267227A7BBA00CE0141 /* ListGenreInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGenreInteractor.swift; sourceTree = "<group>"; };
 		83E5526A227A800800CE0141 /* ListGenresPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGenresPresenter.swift; sourceTree = "<group>"; };
 		83E5526C227A83CF00CE0141 /* ListGenresRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGenresRouter.swift; sourceTree = "<group>"; };
+		83E5526F227BA45600CE0141 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		C03355BF87E872C78EDDCEFD /* Pods_MovieDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE97099CB8BC881EE53BF7B7 /* Pods-MovieDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieDB/Pods-MovieDB.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -209,6 +211,7 @@
 		8393AB7B2270A60E00C0959F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				83E5526E227BA43F00CE0141 /* Fonts */,
 				8393AB802270A64000C0959F /* Storyboards */,
 				8393AB6E2270A5AB00C0959F /* Assets.xcassets */,
 			);
@@ -313,6 +316,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		83E5526E227BA43F00CE0141 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				83E5526F227BA45600CE0141 /* fontawesome-webfont.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -374,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8393AB722270A5AB00C0959F /* LaunchScreen.storyboard in Resources */,
+				83E55270227BA45600CE0141 /* fontawesome-webfont.ttf in Resources */,
 				8393AB6F2270A5AB00C0959F /* Assets.xcassets in Resources */,
 				8393AB6D2270A5AA00C0959F /* Main.storyboard in Resources */,
 			);

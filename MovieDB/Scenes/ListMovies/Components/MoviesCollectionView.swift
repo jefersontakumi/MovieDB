@@ -32,6 +32,7 @@ class MoviesCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout
         let currentMovie = displayMovies![indexPath.row]
         collectionCell.setImage(urlImage: currentMovie.url_image_banner?.replacingOccurrences(of: "w500_and_h282_face", with: "w185"))
         collectionCell.title.text = currentMovie.title
+        collectionCell.title.sizeToFit()
         return collectionCell
     }
     

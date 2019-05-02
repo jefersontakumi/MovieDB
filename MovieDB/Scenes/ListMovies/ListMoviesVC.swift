@@ -47,6 +47,9 @@ class ListMoviesVC: UIViewController, ListMoviesDisplayLogic {
     {
         self.title = "MovieDB"
         
+        let btnGenre = UIBarButtonItem.init(title: "Genre", style: .plain, target: self, action: #selector(showGenre))
+        self.navigationItem.leftBarButtonItem = btnGenre
+        
         let viewController = self
         let interactor = ListMoviesInteractor()
         let presenter = ListMoviesPresenter()
@@ -65,8 +68,7 @@ class ListMoviesVC: UIViewController, ListMoviesDisplayLogic {
     }
     
     func fetchMovie() {
-        let requestMovie = ListMovies.FetchMovies.Request(listType: .upcoming)
-        interactor?.fetchMovies(request: requestMovie)
+        interactor?.fetchMovies()
         
         interactor?.fetchMoviesPoster()
     }
@@ -90,6 +92,10 @@ class ListMoviesVC: UIViewController, ListMoviesDisplayLogic {
         let btnOk = UIAlertAction.init(title: "OK", style: .default, handler: nil)
         alert.addAction(btnOk)
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func showGenre() {
+        router?.routeToShowGenre(segue: self.storyboard)
     }
 }
 
@@ -145,6 +151,7 @@ extension ListMoviesVC: UITableViewDelegate {
         guard let tableViewCell = cell as? PostersCell else { return }
         let key = Array(moviesPoster!.keys)[indexPath.section]
         tableViewCell.collectionView.loadConfig(movies: router?.dataStore?.moviesPoster?[key], displayMovies: moviesPoster![key]!, router: router as! ListMoviesRouter, storyboard: self.storyboard!)
+        tableViewCell.collectionView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

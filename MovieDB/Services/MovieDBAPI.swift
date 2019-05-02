@@ -11,7 +11,7 @@ import Alamofire
 
 class MovieDBAPI: MovieDBStoreProtocol {
     
-    func requestGet(requestURLString: String, parameters: Dictionary<String, String>, callback: @escaping (Result<MovieDBError>)-> Void) {
+    func requestGet(requestURLString: String, parameters: Dictionary<String, Any>, callback: @escaping (Result<MovieDBError>)-> Void) {
         Alamofire.request(requestURLString, method: .get, parameters: parameters)
             .responseJSON { response in
                 switch response.result {
@@ -25,14 +25,43 @@ class MovieDBAPI: MovieDBStoreProtocol {
         }
     }
     
-    func fetchMovies(genreID: Int?, done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void){
+    func fetchMovies(genreID: Int?, listType: MovieList?, done: @escaping ([Movie]) -> Void, fail: @escaping (String) -> Void){
         let requestURLString = "\(Config.apiUrl)/discover/movie"
-        var parameters: Dictionary<String, String> = [
+        var parameters: Dictionary<String, Any> = [
             "api_key": Config.apiKey
         ]
         
         if let genre = genreID {
             parameters["with_genres"] = "\(genre)"
+        }
+        
+        if let movieType = listType {
+            switch movieType {
+            case .new:
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                
+                let today = dateFormatter.string(from: Date())
+                let thirtyDaysInSeconds: TimeInterval = 60 * 60 * 24 * 30
+                let thirtyDaysAgo = dateFormatter.string(from: Date(timeIntervalSinceNow: -thirtyDaysInSeconds))
+                
+                parameters["sort_by"] = "primary_release_date.desc"
+                parameters["page"] = 1
+                parameters["primary_release_date.gte"] = thirtyDaysAgo
+                parameters["primary_release_date.lte"] = today
+            case .popular:
+                parameters["sort_by"] = "popularity.desc"
+                parameters["page"] = 1
+            case .top_rated:
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy"
+                let year = dateFormatter.string(from: Date())
+                
+                parameters["sort_by"] = "vote_average.desc"
+                parameters["page"] = 1
+                parameters["vote_count.gte"] = 1
+                parameters["primary_release_year"] = Int(year)
+            }
         }
         
         var movies :[Movie] = []

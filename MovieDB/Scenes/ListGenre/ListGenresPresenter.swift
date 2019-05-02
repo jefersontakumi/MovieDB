@@ -23,6 +23,10 @@ class ListGenresPresenter: ListGenresPresentationLogic
         displayedGenres = response.genres.map { (genre) in
             return ListGenres.FetchGenres.ViewModel.DisplayedListGenre(id: genre.id, name: genre.name)
         }
+        
+        let defaultGenre = ListGenres.FetchGenres.ViewModel.DisplayedListGenre(id: 0, name: "Todos")
+        displayedGenres.insert(defaultGenre, at: 0)
+        
         viewController?.displayFetchedGenres(viewModel: displayedGenres)
     }
     

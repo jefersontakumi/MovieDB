@@ -14,7 +14,7 @@ enum ListMovies
     {
         struct Request
         {
-            var listType: MovieList
+            var listType: MovieList?
         }
         
         struct Response

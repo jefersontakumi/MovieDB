@@ -10,8 +10,7 @@ import UIKit
 
 protocol ListMoviesBusinessLogic
 {
-    func fetchMoviesByGenre(id: Int?)
-    func fetchMovies(request: ListMovies.FetchMovies.Request)
+    func fetchMovies()
     func fetchMoviesPoster()
 }
 
@@ -31,9 +30,9 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
     var moviesUpcoming: [Movie]?
     var moviesPoster: [String:[Movie]]?
     
-    func fetchMoviesByGenre(id: Int?)
+    func fetchMoviesByGenre(id: Int?, listType: MovieList?)
     {
-        moviesWorker.fecthMovies(genreID: id) { (dataMovies, error) in
+        moviesWorker.fecthMovies(genreID: id, listType: listType) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
             }
@@ -46,14 +45,14 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
         }
     }
     
-    func fetchMovies(request: ListMovies.FetchMovies.Request)
+    func fetchMovies()
     {
+        var currentGenre: Int? = nil
         if let genre = currentGenreID, genre > 0 {
-            self.fetchMoviesByGenre(id: genre)
+            currentGenre = genre
         }
-        else
-        {
-        moviesWorker.fecthMovies(listType: request.listType) { (dataMovies, error) in
+        
+        moviesWorker.fecthMovies(genreID: currentGenre, listType: nil) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
             }
@@ -63,7 +62,6 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 let response = ListMovies.FetchMovies.Response(movies: movies)
                 self.presenter?.presentFetchedMovies(response: response)
             }
-        }
         }
     }
     
@@ -71,8 +69,13 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
     {
         let loadMovies = DispatchGroup()
         
+        var currentGenre: Int? = nil
+        if let genre = currentGenreID, genre > 0 {
+            currentGenre = genre
+        }
+        
         loadMovies.enter()
-        moviesWorker.fecthMovies(listType: .now_playing) { (dataMovies, error) in
+        moviesWorker.fecthMovies(genreID: currentGenre, listType: .new) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
             }
@@ -81,19 +84,13 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 if self.moviesPoster == nil {
                     self.moviesPoster = [String:[Movie]]()
                 }
-                if var aux = self.moviesPoster!["Now Playing"] {
-                    aux.append(contentsOf: movies)
-                }
-                else
-                {
-                    self.moviesPoster!["Now Playing"]  = movies
-                }
+                self.moviesPoster!["New"]  = movies
                 loadMovies.leave()
             }
         }
         
         loadMovies.enter()
-        moviesWorker.fecthMovies(listType: .top_rated) { (dataMovies, error) in
+        moviesWorker.fecthMovies(genreID: currentGenre, listType: .top_rated) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
             }
@@ -102,19 +99,13 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 if self.moviesPoster == nil {
                     self.moviesPoster = [String:[Movie]]()
                 }
-                if var aux = self.moviesPoster!["Top Rated"] {
-                    aux.append(contentsOf: movies)
-                }
-                else
-                {
-                    self.moviesPoster!["Top Rated"]  = movies
-                }
+                self.moviesPoster!["Top Rated"]  = movies
                loadMovies.leave()
             }
         }
         
         loadMovies.enter()
-        moviesWorker.fecthMovies(listType: .popular) { (dataMovies, error) in
+        moviesWorker.fecthMovies(genreID: currentGenre, listType: .popular) { (dataMovies, error) in
             if let errorMessage = error, !errorMessage.isEmpty {
                 self.presenter?.showError(message: errorMessage)
             }
@@ -123,13 +114,7 @@ class ListMoviesInteractor: ListMoviesBusinessLogic, ListMoviesDataStore
                 if self.moviesPoster == nil {
                     self.moviesPoster = [String:[Movie]]()
                 }
-                if var aux = self.moviesPoster!["Popular"] {
-                    aux.append(contentsOf: movies)
-                }
-                else
-                {
-                    self.moviesPoster!["Popular"]  = movies
-                }
+                self.moviesPoster!["Popular"]  = movies
                 loadMovies.leave()
             }
         }

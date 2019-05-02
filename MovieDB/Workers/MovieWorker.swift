@@ -9,8 +9,7 @@
 import Foundation
 
 protocol MovieWorkerProtocol {
-    func fecthMovies(genreID: Int?, completionHandler: @escaping ([Movie]?, String?) -> Void) 
-    func fecthMovies(listType: MovieList,completionHandler: @escaping ([Movie]?, String?) -> Void)
+    func fecthMovies(genreID: Int?, listType: MovieList?, completionHandler: @escaping ([Movie]?, String?) -> Void) 
     func getMovie(id: Int, completionHandler: @escaping (DetailMovie?, String?) -> Void)
     func fecthGenres(completionHandler: @escaping ([Genre]?, String?) -> Void)
 }
@@ -22,20 +21,8 @@ class MovieWorker: MovieWorkerProtocol {
         self.movieDBStore = movieDBStore
     }
     
-    func fecthMovies(genreID: Int?, completionHandler: @escaping ([Movie]?, String?) -> Void) {
-        movieDBStore.fetchMovies(genreID: genreID, done: { (data) in
-            DispatchQueue.main.async {
-                completionHandler(data, nil)
-            }
-        }, fail: { (error) in
-            DispatchQueue.main.async {
-                completionHandler(nil, error)
-            }
-        })
-    }
-    
-    func fecthMovies(listType: MovieList, completionHandler: @escaping ([Movie]?, String?) -> Void) {
-        movieDBStore.fetchMovies(listType: listType, done: { (data) in
+    func fecthMovies(genreID: Int?, listType: MovieList?, completionHandler: @escaping ([Movie]?, String?) -> Void) {
+        movieDBStore.fetchMovies(genreID: genreID, listType: listType, done: { (data) in
             DispatchQueue.main.async {
                 completionHandler(data, nil)
             }

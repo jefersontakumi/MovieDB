@@ -31,7 +31,8 @@ class DetailMoviePresenter: DetailMoviePresentationLogic
             url_image_backdrop: response.movie.backdropPath(size: .w500),
             url_image_poster: response.movie.posterPath(size: .w185),
             overview: response.movie.overview,
-            release_year: releaseYear
+            release_year: releaseYear,
+            video: response.movie.video
         )
         viewController?.displayFetchedMovie(viewModel: DetailMovieModels.GetMovie.ViewModel(displayedDetailMovie: displayedMovie))
     }
