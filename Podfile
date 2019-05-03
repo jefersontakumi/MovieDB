@@ -8,6 +8,5 @@ target 'MovieDB' do
   # Pods for MovieDB
 
   pod 'Alamofire'
-  pod 'AlamofireImage'
 
 end

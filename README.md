@@ -1,8 +1,8 @@
 # MovieDB
 Aplicativo de catalogos de filmes, utilizando a base de dados da [The Movie DataBase](https://www.themoviedb.org/) 
 
-##Começando
-Esse projeto utilizado o framework Alamofire e o gerenciador de dependencias CocoaPods. 
+## Começando
+Esse projeto utiliza o framework Alamofire e o gerenciador de dependencias CocoaPods. 
 Então após baixar o projeto, abra o prompt de comando, e dentro do diretório do projeto execute o seguinte comando:
 
 ```

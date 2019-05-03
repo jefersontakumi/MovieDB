@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Alamofire
-import AlamofireImage
 
 protocol DetailMovieDisplayLogic: class
 {
@@ -72,8 +70,8 @@ class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
             let movie = viewModel.displayedDetailMovie
             self.titleMovie.text = movie.title
             self.titleMovie.sizeToFit()
-            self.posterImg.imageFromRemote(urlString: movie.url_image_poster ?? "")
-            self.backdropImg.imageFromRemote(urlString: movie.url_image_backdrop ?? "")
+            self.posterImg.imageFromRemote(urlString: movie.url_image_poster)
+            self.backdropImg.imageFromRemote(urlString: movie.url_image_backdrop)
             
             self.overview.text = movie.overview
             self.overview.sizeToFit()

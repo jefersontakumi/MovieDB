@@ -32,9 +32,15 @@ class ListMoviesPresenter: ListMoviesPresentationLogic
     {
         var displayedMovies: [String:[ListMovies.FetchMovies.ViewModel.DisplayedMovie]] = [:]
         
+        let calendar = NSCalendar.current
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "yyyy-MM-dd"
+        var releaseYear: Int = 0
+        
         for (key,value) in response.movies {
             displayedMovies[key] = value.map { (movie) in
-                return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: movie.title, url_image_banner: movie.posterPath(size: .w185))
+                releaseYear = calendar.component(.year, from: dayFormatter.date(from: movie.release_date)!)
+                return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: "\(movie.title) (\(releaseYear))", url_image_banner: movie.posterPath(size: .w185))
             }
         }
         viewController?.displayFetchedMoviesPoster(viewModel: displayedMovies)

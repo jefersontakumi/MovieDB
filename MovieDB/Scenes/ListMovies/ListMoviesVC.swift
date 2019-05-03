@@ -108,7 +108,7 @@ extension ListMoviesVC: UICollectionViewDataSource, UICollectionViewDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "upcomingCell", for: indexPath) as! MovieUpcomingCell
         if let currentMovie = moviesUpcoming?[indexPath.row] {
             cell.titleMovie.text = currentMovie.title
-            cell.setImage(urlImage: currentMovie.url_image_banner)
+            cell.image.imageFromRemote(urlString: currentMovie.url_image_banner)
         }
         else {
             cell.titleMovie.text = ""

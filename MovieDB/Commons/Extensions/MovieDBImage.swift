@@ -9,9 +9,10 @@
 import UIKit
 
 extension UIImageView {
-    public func imageFromRemote(urlString: String) {
+    public func imageFromRemote(urlString: String?) {
         self.image = nil
-        URLSession.shared.dataTask(with: NSURL(string: urlString)! as URL, completionHandler: { (data, response, error) -> Void in
+        if let imageUrl = urlString {
+        URLSession.shared.dataTask(with: NSURL(string: imageUrl)! as URL, completionHandler: { (data, response, error) -> Void in
             if let currentData = data {
                 DispatchQueue.main.async(execute: { () -> Void in
                     let image = UIImage(data: currentData)
@@ -23,5 +24,10 @@ extension UIImageView {
                 self.image = #imageLiteral(resourceName: "placeholderImage")
             }
         }).resume()
+        }
+        else
+        {
+            self.image = #imageLiteral(resourceName: "placeholderImage")
+        }
     }
 }

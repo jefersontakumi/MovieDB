@@ -30,7 +30,7 @@ class MoviesCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "posterCell", for: indexPath) as! PosterMovieCell
         let currentMovie = displayMovies![indexPath.row]
-        collectionCell.setImage(urlImage: currentMovie.url_image_banner?.replacingOccurrences(of: "w500_and_h282_face", with: "w185"))
+        collectionCell.image.imageFromRemote(urlString: currentMovie.url_image_banner)
         collectionCell.title.text = currentMovie.title
         collectionCell.title.sizeToFit()
         return collectionCell
