@@ -31,7 +31,14 @@ class MoviesCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout
         let collectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "posterCell", for: indexPath) as! PosterMovieCell
         let currentMovie = displayMovies![indexPath.row]
         collectionCell.image.imageFromRemote(urlString: currentMovie.url_image_banner)
-        collectionCell.title.text = currentMovie.title
+        let attributedOptions = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
+        if let attributedString = try? NSAttributedString(data: currentMovie.title.data(using: .utf8)!, options: attributedOptions, documentAttributes: nil) {
+            collectionCell.title.attributedText = attributedString
+        }
+        else
+        {
+            collectionCell.title.text = currentMovie.title
+        }
         collectionCell.title.sizeToFit()
         return collectionCell
     }

@@ -20,7 +20,6 @@ class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
     @IBOutlet var backdropImg: UIImageView!
     @IBOutlet var posterImg: UIImageView!
     @IBOutlet var titleMovie: UILabel!
-    @IBOutlet var releaseYear: UILabel!
     @IBOutlet var overview: UILabel!
     @IBOutlet var videoPlay: UIButton!
     
@@ -68,16 +67,29 @@ class DetailMovieVC: UIViewController, DetailMovieDisplayLogic {
     func displayFetchedMovie(viewModel: DetailMovieModels.GetMovie.ViewModel) {
         DispatchQueue.main.async {
             let movie = viewModel.displayedDetailMovie
-            self.titleMovie.text = movie.title
+            
+            let attributedOptions = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
+            if let attributedString = try? NSAttributedString(data: movie.title.data(using: .utf8)!, options: attributedOptions, documentAttributes: nil) {
+                self.titleMovie.attributedText = attributedString
+            }
+            else
+            {
+                self.titleMovie.text = movie.title
+            }
+            
             self.titleMovie.sizeToFit()
             self.posterImg.imageFromRemote(urlString: movie.url_image_poster)
             self.backdropImg.imageFromRemote(urlString: movie.url_image_backdrop)
             
             self.overview.text = movie.overview
-            self.overview.sizeToFit()
-            self.releaseYear.text = "\(movie.release_year)"
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width - 16, height: .greatestFiniteMagnitude)
+            let expectedLabelSize = movie.overview?.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)], context: nil)
+            self.overview.frame = CGRect(x: 8, y: self.overview.frame.origin.y, width: (expectedLabelSize?.size.width)!, height: (expectedLabelSize?.size.height)!)
+            self.overview.updateConstraints()
             
-            self.videoPlay.isHidden = !movie.video
+            self.videoPlay.isHidden = !movie.hasVideo
+            
+            self.scroll.contentSize = CGSize(width: self.scroll.frame.size.width, height: self.overview.frame.origin.y + (expectedLabelSize?.size.height)!)
         }
     }
 }

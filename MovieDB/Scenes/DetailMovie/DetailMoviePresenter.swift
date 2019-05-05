@@ -27,12 +27,13 @@ class DetailMoviePresenter: DetailMoviePresentationLogic
         
         
         let displayedMovie = DetailMovieModels.GetMovie.ViewModel.DisplayedDetailMovie(
-            title: response.movie.title,
+            title: "\(response.movie.title) <font color=gray>(\(releaseYear))</font>",
             url_image_backdrop: response.movie.backdropPath(size: .w500),
             url_image_poster: response.movie.posterPath(size: .w185),
             overview: response.movie.overview,
             release_year: releaseYear,
-            video: response.movie.video
+            video: response.movie.video,
+            hasVideo: response.movie.videos.results.count > 0
         )
         viewController?.displayFetchedMovie(viewModel: DetailMovieModels.GetMovie.ViewModel(displayedDetailMovie: displayedMovie))
     }

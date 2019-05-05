@@ -114,9 +114,11 @@ class MovieDBAPI: MovieDBStoreProtocol {
     
     func getMovie(id: Int, done: @escaping (DetailMovie) -> Void, fail: @escaping (String) -> Void){
         let requestURLString = "\(Config.apiUrl)/movie/\(id)"
-        let parameters: Dictionary<String, String> = [
+        var parameters: Dictionary<String, String> = [
             "api_key": Config.apiKey
         ]
+        
+        parameters["append_to_response"] = "videos"
         
         var movie: DetailMovie?
         

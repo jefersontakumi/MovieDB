@@ -40,7 +40,7 @@ class ListMoviesPresenter: ListMoviesPresentationLogic
         for (key,value) in response.movies {
             displayedMovies[key] = value.map { (movie) in
                 releaseYear = calendar.component(.year, from: dayFormatter.date(from: movie.release_date)!)
-                return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: "\(movie.title) (\(releaseYear))", url_image_banner: movie.posterPath(size: .w185))
+                return ListMovies.FetchMovies.ViewModel.DisplayedMovie(id: movie.id, title: "\(movie.title) <font color=gray>(\(releaseYear))</font>", url_image_banner: movie.posterPath(size: .w185))
             }
         }
         viewController?.displayFetchedMoviesPoster(viewModel: displayedMovies)

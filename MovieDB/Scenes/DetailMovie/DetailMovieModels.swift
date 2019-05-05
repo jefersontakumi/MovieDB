@@ -32,6 +32,7 @@ enum DetailMovieModels
                 var overview: String?
                 var release_year: Int
                 var video: Bool
+                var hasVideo: Bool
             }
             var displayedDetailMovie: DisplayedDetailMovie
         }

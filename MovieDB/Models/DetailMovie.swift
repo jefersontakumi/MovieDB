@@ -33,6 +33,7 @@ struct DetailMovie: Codable {
     var video: Bool
     var vote_average: Double
     var vote_count: Int
+    var videos: VideoResult
     
     func posterPath(size: ImageSize) -> String? {
         if let url = poster_path {

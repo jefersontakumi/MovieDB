@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 protocol ListMoviesDisplayLogic: class
 {

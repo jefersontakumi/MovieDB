@@ -59,7 +59,7 @@ Obs: é necessário a url ser https
             <key>needs-shine</key>
             <true/>
             <key>url</key>
-            <string>tumb_support.png</string>
+            <string>thumb_logo.png</string>
         </dict>
     </array>
     <key>metadata</key>
