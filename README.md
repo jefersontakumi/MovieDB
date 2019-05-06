@@ -14,6 +14,7 @@ pod install
 * Swift 5
 
 ### Gerar o ipa para um site interno
+```
 1 -  É necessário ter uma conta Enterprise
 2 - Gerar a chave do aplicativo no site do Apple Developer
 3 - Selecionar no schema o device "Generic iOS Device"
@@ -23,6 +24,7 @@ pod install
 7 - Clique novamente em next
 8 -  Clique novamente em next
 9 - Clique em export
+```
 
 ### Site para instação
 Criar uma pagina com um link itms-services://?action=download-manifest&url=https://www.teste.com.br/MovieDB.plist
