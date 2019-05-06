@@ -33,6 +33,7 @@ enum DetailMovieModels
                 var release_year: Int
                 var video: Bool
                 var hasVideo: Bool
+                var rating: Double
             }
             var displayedDetailMovie: DisplayedDetailMovie
         }
