@@ -191,7 +191,6 @@
 		8393AB792270A60300C0959F /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				83E55269227A7DF000CE0141 /* Controller */,
 				83E5525F22791D2700CE0141 /* Extensions */,
 				8393AB872270B07400C0959F /* Constants */,
 				83E5525D22790BE800CE0141 /* Helpers.swift */,
@@ -313,13 +312,6 @@
 				83E5526C227A83CF00CE0141 /* ListGenresRouter.swift */,
 			);
 			path = ListGenre;
-			sourceTree = "<group>";
-		};
-		83E55269227A7DF000CE0141 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		83E5526E227BA43F00CE0141 /* Fonts */ = {
